@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Welcome, Student</h1>
+    <nav>
+      <ul>
+        <li><a href="#">Classes</a></li>
+        <li><a href="#">Assignments</a></li>
+        <li><a href="#">Events</a></li>
+        <li><a href="#">Announcements</a></li>
+        <li><a href="index.html">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section class="welcome">
+      <script>
+  const user = JSON.parse(localStorage.getItem("loggedInUser"));
+  if (!user || user.role !== "student") {
+    window.location.href = "index.html";
+  }
+
+  document.getElementById("welcome").textContent = `Welcome, ${user.username}`;
+
+  const dashboardCards = document.getElementById("dashboardCards");
+
+  const classes = "Math, Science, English, History";
+  const assignments = JSON.parse(localStorage.getItem("assignments")) || ["No assignments yet."];
+  const announcements = JSON.parse(localStorage.getItem("announcements")) || ["No announcements yet."];
+  const events = "Sports Day - July 22, Parent Meeting - July 25";
+
+  const data = {
+    Classes: classes,
+    Assignments: assignments.join("<br>"),
+    Events: events,
+    Announcements: announcements.join("<br>")
+  };
+
+  for (const key in data) {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `<h3>${key}</h3><p>${data[key]}</p>`;
+    dashboardCards.appendChild(card);
+  }
+
+  function logout() {
+    localStorage.removeItem("loggedInUser");
+  }
+</script>
+
+    </section>
+  </main>
+</body>
+</html>
