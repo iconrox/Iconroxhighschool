@@ -1,1 +1,77 @@
-# Iconroxhighschool
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Welcome, Admin</h1>
+    <nav>
+      <ul>
+        <li><a href="#">Post Announcements</a></li>
+        <li><a href="#">Add Assignments</a></li>
+        <li><a href="index.html" onclick="logout()">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="welcome">
+      <h2>Manage School Content</h2>
+    </section>
+
+    <section class="cards">
+      <!-- Post Announcement -->
+      <div class="card">
+        <h3>New Announcement</h3>
+        <textarea id="announcementText" placeholder="Write announcement..."></textarea>
+        <button onclick="addAnnouncement()">Post</button>
+      </div>
+
+      <!-- Add Assignment -->
+      <div class="card">
+        <h3>New Assignment</h3>
+        <textarea id="assignmentText" placeholder="Write assignment..."></textarea>
+        <button onclick="addAssignment()">Add</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user || user.role !== "admin") {
+      window.location.href = "index.html";
+    }
+
+    function addAnnouncement() {
+      const text = document.getElementById("announcementText").value.trim();
+      if (text) {
+        let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
+        announcements.push(text);
+        localStorage.setItem("announcements", JSON.stringify(announcements));
+        alert("Announcement posted.");
+        document.getElementById("announcementText").value = "";
+      }
+    }
+
+    function addAssignment() {
+      const text = document.getElementById("assignmentText").value.trim();
+      if (text) {
+        let assignments = JSON.parse(localStorage.getItem("assignments")) || [];
+        assignments.push(text);
+        localStorage.setItem("assignments", JSON.stringify(assignments));
+        alert("Assignment added.");
+        document.getElementById("assignmentText").value = "";
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("loggedInUser");
+    }
+  </script>
+</body>
+</html>
